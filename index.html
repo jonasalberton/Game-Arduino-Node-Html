@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <title>Título da página</title>
+    <meta charset="utf-8">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+
+    <script>
+        var  socket = io();
+        socket.on("dadoArduino", function (dado) {
+            console.log("deu certo" + dado);
+        })    
+    </script>
+</body>
+
+</html>
