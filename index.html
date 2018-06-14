@@ -1,20 +1,149 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<html>
 
+		<script src="/socket.io/socket.io.js"></script>
 <head>
-    <title>Título da página</title>
-    <meta charset="utf-8">
-    <script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+ window.requestAnimFrame = (function(){
+      return  window.requestAnimationFrame       || 
+              window.webkitRequestAnimationFrame || 
+              window.mozRequestAnimationFrame    || 
+              window.oRequestAnimationFrame      || 
+              window.msRequestAnimationFrame     || 
+              function(/* function */ callback, /* DOMElement */ element){
+                window.setTimeout(callback, 1000 / 60);
+              };
+    })();
+
+
+var canvas, context, position, velocity, aceleration;
+var lastUpdateTime = 0;
+var jumping = 0;
+var img = new Image();
+var dir = "D";
+var walking = false;
+var indexImage = 1;
+var deltaX = 0;
+
+function init(){
+	canvas = document.getElementById("myCanvas");
+	context = canvas.getContext("2d");
+	
+	position = [100, 609];
+	velocity = [0, 0];
+	aceleration = [0, 2000];
+	
+	gameLoop();
+}
+
+function gameLoop() {
+    requestAnimFrame(gameLoop);
+	
+	var delta = (Date.now() - lastUpdateTime) / 1000;
+    update(delta);
+	render();
+	
+	lastUpdateTime = Date.now();
+}
+
+function update(delta){
+	var newVelocity = [velocity[0]*delta, velocity[1]*delta];
+	var newAceleration = [aceleration[0]*delta, aceleration[1]*delta];
+	
+	position[0] = position[0] + newVelocity[0];
+	position[1] = position[1] + newVelocity[1];
+	velocity[0] = velocity[0] + newAceleration[0];
+	velocity[1] = velocity[1] + newAceleration[1];
+	
+	if(position[0] < 800 && position[1] > 609){
+		position[1] = 609;
+		velocity[1] = 0;
+		jumping = 0;
+	}
+	
+	if(jumping > 0){
+		img.src = "http://localhost:3000/mario-walk-2.jpg";
+	}else{
+		if(walking == false){
+			img.src = "http://localhost:3000/mario-walk-2.jpg";
+		}else{
+			if(newVelocity[0] > 0){
+				deltaX += newVelocity[0];
+			} else{
+				deltaX += newVelocity[0] * -1;
+			}
+			if(deltaX > 50){
+				deltaX = 0;
+				if(indexImage == 1){
+					img.src = "http://localhost:3000/mario-walk-2.jpg";
+					indexImage = 2;
+				}else{
+					img.src = "http://localhost:3000/mario-walk-2.jpg";
+					indexImage = 1;
+				}
+			}
+		}
+	}
+}
+ 
+function render(){
+    context.clearRect(0, 0, 1024, 800);
+	context.fillStyle = "rgb(0,0,0)";
+    context.fillRect(0, 700, 800, 800);
+	
+	if(dir == "E"){
+		context.save();
+		context.translate(position[0] + img.width, position[1]);
+		context.scale(-1, 1);
+		context.drawImage(img, 0, 0);
+		context.restore();
+	}else{
+		context.drawImage(img, position[0], position[1]);
+	}
+}
+
+function gameKeyDown(evt){
+	if(evt.keyCode == 39){
+		velocity[0] = 400;
+		dir = "D";
+		walking = true;
+	}else if(evt.keyCode == 37){
+		velocity[0] = -400;
+		dir = "E";
+		walking = true;
+	}else if(evt.keyCode == 32){
+		if(jumping < 2){
+			velocity[1] = -800;
+			jumping += 1;
+		}
+	}
+}
+
+function gameKeyUp(evt){
+	if(evt.keyCode == 39){
+		velocity[0] = 0;
+		walking = false;
+	}else if(evt.keyCode == 37){
+		velocity[0] = 0;
+		walking = false;
+	}
+}
+
+  var  socket =  io();
+            socket.on("dadoArduino", function (dado) {
+                // console.log(dado.valor);
+				document.dispatchEvent('keypress', function() {
+					keyCode = 31;
+				})
+            });
+
+window.addEventListener("keydown", gameKeyDown);
+window.addEventListener("keyup", gameKeyUp);
+</script>
+		
 </head>
 
-<body>
-
-    <script>
-        var  socket = io();
-        socket.on("dadoArduino", function (dado) {
-            console.log("deu certo" + dado);
-        })    
-    </script>
+<body onload="init()">
+<canvas id="myCanvas" style="border: 1px solid black;" width="1024" height="800" />
 </body>
 
 </html>
