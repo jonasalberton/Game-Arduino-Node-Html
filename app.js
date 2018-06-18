@@ -11,6 +11,7 @@ app.get("/", function(req, res) {
     res.sendfile("index.html");
 })
 
+
 var mySocket;
 
 var serialport = require("serialport");
@@ -24,11 +25,20 @@ mySerial.on("open", function() {
     console.log("porta aberta");
 });
 
+var map = new Map();
+map.set('U', 38);
+map.set('D', 40);
+map.set('L', 37);
+map.set('R', 39);
+map.set('S', 0);
+
 mySerial.on("data", function(data) {
     if(data) {
-        console.log(data);
+        
+
         io.emit("dadoArduino", {
-        valor: data + 'data'
+        valor: data + '1',    
+        keyCode: map.get((data + '1').substr(0,1))
         })
     }
 })

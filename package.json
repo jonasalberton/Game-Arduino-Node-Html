@@ -1,0 +1,33 @@
+{
+  "name": "spaceship",
+  "version": "1.0.0",
+  "description": "Jogo de nave desenvolvido em Javascript, estudo do livro  \"Desenvolva jogos com HTML5 Canvas e JavaScript - Casa do Código\"",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nelsonlpco/spaceship.git"
+  },
+  "keywords": [
+    "Spaceship",
+    "Nave",
+    "Javascript",
+    "game"
+  ],
+  "author": "Nelson Luiz Prado Canabarro de Oliveira",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nelsonlpco/spaceship/issues"
+  },
+  "homepage": "https://github.com/nelsonlpco/spaceship",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-jshint": "^2.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.1",
+    "jshint": "^2.8.0"
+  }
+}

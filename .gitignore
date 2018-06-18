@@ -1,2 +1,2 @@
-
-node_modules/
+#Ignora o diretorio e arquivos node_modules
+node_modules/**/*
