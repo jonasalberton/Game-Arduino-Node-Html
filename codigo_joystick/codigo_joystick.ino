@@ -10,19 +10,18 @@ int x;
 
 int y;
 
-String FRONT = "FRONT"; 
+int botao = 12;
 
-String BACK = "BACK";
-
-String DOWN = "DOWN";
-
-String POS;
+int bt;
 
 void setup() {
   // put your setup code here, to run once:
 
+ 
  pinMode(eixo2, INPUT);
 
+ pinMode(botao, INPUT);
+ 
  pinMode(7, OUTPUT);
 
  pinMode(4, OUTPUT);
@@ -36,19 +35,24 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  POS = "";
   x = analogRead(eixoX);                   
   y = analogRead(eixoY);
+
+  bt = digitalRead(botao);
+  if (bt == 1) {
+    Serial.println(bt);  
+  }
   
   
-  if (x > 950) {
-    Serial.println("DOWN");
-  } else if (y < 50) {
+  
+  if (x > 900) {
     Serial.println("RIGHT");
-  } else if (x < 50) {
+  } else if (y < 100) {
     Serial.println("UP");
-  } else if(y > 950){
+  } else if (x < 100) {
     Serial.println("LEFT");
+  } else if(y > 900){
+    Serial.println("DOWN");
   } else {
     Serial.println("Stop");
   }

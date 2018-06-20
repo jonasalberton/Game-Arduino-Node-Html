@@ -31,6 +31,8 @@ map.set('D', 40);
 map.set('L', 37);
 map.set('R', 39);
 map.set('S', 0);
+map.set('0', 32);
+map.set('1', 32)
 
 mySerial.on("data", function(data) {
     if(data) {
